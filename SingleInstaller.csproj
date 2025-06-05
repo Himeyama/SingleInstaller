@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- リリース構成 -->
+    <Configuration>Release</Configuration>
+    <!-- ターゲットランタイム -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <!-- 自己完結型 -->
+    <SelfContained>true</SelfContained>
+    <!-- 単一ファイルにバンドル -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <!-- デバッグ情報を無効にする -->
+    <DebugType>none</DebugType>
+
+    <!-- <ApplicationManifest>app.manifest</ApplicationManifest> -->
+
+    <!-- 出力ファイル名を指定する場合 -->
+    <AssemblyName>Setup</AssemblyName>
+    <!-- トリミングを有効にする -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <!-- Native AOT を有効にする -->
+    <PublishAot>true</PublishAot>
+
+    <!-- パブリッシュの出力先ディレクトリ -->
+    <PublishDir>publish/</PublishDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="resources\package.zip" />
+  </ItemGroup>
+
+</Project>
