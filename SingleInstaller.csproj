@@ -28,6 +28,9 @@
 
     <!-- パブリッシュの出力先ディレクトリ -->
     <PublishDir>publish/</PublishDir>
+
+    <!-- アイコン -->
+    <ApplicationIcon>App.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
