@@ -486,3 +486,4 @@ $RECYCLE.BIN/
 resources/*
 
 build-*.ps1
+build-app/
