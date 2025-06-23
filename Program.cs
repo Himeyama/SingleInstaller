@@ -1,13 +1,12 @@
 ﻿using System.Diagnostics;
 using System.IO.Compression;
 using System.Reflection;
-using System.Threading.Tasks;
 
 internal class Program
 {
     const string outputFileName = "package.zip";
 
-    private static void Main()
+    private static async Task Main()
     {
         Assembly assembly = Assembly.GetExecutingAssembly();
         string resourceName = "SingleInstaller.resources.package.zip"; // 名前空間を正確に指定！
@@ -23,10 +22,9 @@ internal class Program
         {
             stream.CopyTo(fileStream);
         }
-        // Console.WriteLine("リソースが展開されました！");
 
         // 展開先ディレクトリ
-        string extractDir = Path.Combine(Path.GetTempPath(), "tmp_installer");
+        string extractDir = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(Path.GetRandomFileName()));
 
         if (Directory.Exists(extractDir))
             Directory.Delete(extractDir, true);
@@ -58,10 +56,28 @@ internal class Program
         if (File.Exists(outputFileName))
             File.Delete(outputFileName);
 
-        _ = RunInstaller(extractDir);
+        await RunInstaller(extractDir);
+        await RemoveFiles(extractDir);
     }
 
-    static async Task RunInstaller(string extractDir){
+    static async Task RemoveFiles(string extractDir)
+    {
+        while (true)
+        {
+            await Task.Delay(5000);
+
+            // プロセスが起動しているか確認
+            Process[] processes = Process.GetProcessesByName("HDS");
+            if (processes.Length == 0)
+            {
+                Directory.Delete(extractDir, recursive: true);
+                return;
+            }
+        }
+    }
+
+    static async Task RunInstaller(string extractDir)
+    {
         using Process process = new()
         {
             StartInfo = new ProcessStartInfo
@@ -73,6 +89,7 @@ internal class Program
                 WindowStyle = ProcessWindowStyle.Hidden
             }
         };
+
         process.Start();
         await process.WaitForExitAsync();
     }
